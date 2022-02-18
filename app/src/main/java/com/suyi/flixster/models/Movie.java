@@ -20,12 +20,11 @@ public class Movie {
         overview = jsonObject.getString("overview");
     }
 
-    public static List<Movie>(JSONArray movieJsonArray){
+    public static List<Movie>fromJsonArray(JSONArray movieJsonArray) throws JSONException {
         List<Movie> movies = new ArrayList<>();
         for (int i = 0; i < movieJsonArray.length(); i++){
-            movies.add(new Movie(movieJsonArray.getJSONObject(i)))
-        }
-        return movies;
+            movies.add(new Movie(movieJsonArray.getJSONObject(i)));
+        }return movies;
     }
     public String getPosterPath(){
         return String.format("https://image.tmdb.org/t/p/w342/6bCplVkhowCjTHXWv49UjRPn0eK.jpg", posterPath);

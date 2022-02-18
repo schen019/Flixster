@@ -11,8 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.suyi.flixster.R;
 import com.suyi.flixster.models.Movie;
+
+
+import org.chromium.base.Log;
 
 import java.util.List;
 
@@ -57,12 +61,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.VeiwHolder>{
             tvTitle.setText(movie.getTitle());
             tvOverveiw.setText(movie.getOverview());
             String imageUrl;
-            if(context.getResoures().getConfiguration().orientation == Configuration.orientation_landscape){
+            if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
                 imageUrl =movie.getBackdropPath();
             }else {
                 imageUrl =movie.getPosterPath();
             }
-            Glide.with(context).load(movie.getPosterPath().into(ivPoster));
+            Glide.with(context).load(imageUrl).into(ivPoster);
         }
     }
 }

@@ -1,15 +1,14 @@
 package com.suyi.flixster;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.preference.PreferenceActivity;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.suyi.flixster.adapter.MovieAdapter;
 import com.suyi.flixster.models.Movie;
 
@@ -19,6 +18,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Headers;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -30,19 +31,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        RecyclerView rvMovies = findViewById((R.id.rvMovies))
-        movies = new ArrayList<>()；
+        RecyclerView rvMovies = findViewById((R.id.rvMovies));
+        movies = new ArrayList<>();
 
         MovieAdapter movieAdapter = new MovieAdapter(this, movies);
 
         rvMovies.setAdapter(movieAdapter);
 
-        rvMovies.serLayoutManager(new LinearLayoutManager(this));
+        rvMovies.setLayoutManager(new LinearLayoutManager(this));
 
-        AsyncHttpClient client = new AsyHttpCllient();
-        client.get(NOW_PLAYING_URL,new JsonHttpresponseHandler(){
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(NOW_PLAYING_URL,new JsonHttpResponseHandler(){
             @Override
-            public void onSuccess(int statusCode, Headers headers,JSON json){
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
                 Log.d(TAG,"onSuccess");
                 JSONObject jsonObject = json.jsonObject;
                 try{
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
                     movies.addAll(Movie.fromJsonArray(results));
                     movieAdapter.notifyDataSetChanged();
                     Log.i(TAG,"Movie:" + movies.size());
+
+
                 }catch (JSONException e){
                     Log.e(TAG,"Hit json exception",e);
                 }
@@ -59,6 +62,6 @@ public class MainActivity extends AppCompatActivity {
             public  void onFailure(int statusCode, Headers handlers, String response, Throwable throwable){
                 Log.d(TAG,"onFailture");
             }
-        })
+        });
     }
 }
